@@ -2,11 +2,37 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const path = require("path");
+const stripe = require("stripe")(
+  "sk_test_51OaVZZGzBXo3SlmBfVE4lb5YSfBhGvmcgb4k9XFkGe9zYahZ9armvAxesImE3XehLVUDcFxHdqnglfs0WvVLBvSh00dCRw5xdz"
+);
 
 app.use(cors());
 
-app.get("/api/test/data", (req, res) => {
-  res.json({ info: "this data is send from backend" });
+// checkout the payment
+app.post("/api/checkout", async (req, res) => {
+  const session = await stripe.checkout.sessions.create({
+    line_items: [
+      {
+        price_data: {
+          currency: "USD",
+          product_data: { name: "first product" },
+          unit_amount: 12500,
+        },
+        quantity: 1,
+      },
+    ],
+
+    mode: "payment",
+    success_url: `http://localhost:5000/api/success`,
+    cancel_url: `http://localhost:5173/fail`,
+  });
+
+  res.json({ url: session.url });
+});
+// payment ------------------
+
+app.get("/api/success", (req, res) => {
+  res.redirect("http://localhost:5173/");
 });
 // ..............deployment...................
 const __dirname1 = path.resolve();
