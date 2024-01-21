@@ -23,8 +23,8 @@ app.post("/api/checkout", async (req, res) => {
     ],
 
     mode: "payment",
-    success_url: `http://localhost:5000/api/success`,
-    cancel_url: `http://localhost:5173/fail`,
+    success_url: `https://stripe-payment-method.onrender.com/api/success`,
+    cancel_url: `https://stripe-payment-method.onrender.com/fail`,
   });
 
   res.json({ url: session.url });
@@ -32,7 +32,7 @@ app.post("/api/checkout", async (req, res) => {
 // payment ------------------
 
 app.get("/api/success", (req, res) => {
-  res.redirect("http://localhost:5173/");
+  res.redirect("https://stripe-payment-method.onrender.com/");
 });
 // ..............deployment...................
 const __dirname1 = path.resolve();

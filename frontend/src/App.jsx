@@ -3,7 +3,9 @@ import "./App.css";
 
 function App() {
   const handleClick = async () => {
-    const { data } = await axios.post("http://localhost:5000/api/checkout");
+    const { data } = await axios.post(
+      "https://stripe-payment-method.onrender.com/api/checkout"
+    );
     window.open(data.url);
   };
   return (
